@@ -8,17 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        :root { 
-            --primary-color: #1a73e8; 
-            --primary-hover: #1557b0; 
-            --bg-color: #f8f9fa; 
-            --sidebar-bg: #ffffff; 
-            --text-main: #202124; 
-            --text-muted: #5f6368; 
-            --border-color: #dadce0; 
-            --row-green: #e6f4ea; 
-            --row-yellow: #fef7e0; 
-            --row-peach: #ffe8d6; /* 2년 6개월 이상 살구색 추가 */
+        :root {
+            --primary-color: #1a73e8;
+            --primary-hover: #1557b0;
+            --bg-color: #f8f9fa;
+            --sidebar-bg: #ffffff;
+            --text-main: #202124;
+            --text-muted: #5f6368;
+            --border-color: #dadce0;
+            --row-green: #e6f4ea;
+            --row-yellow: #fef7e0;
+            --row-peach: #ffe8d6;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
@@ -36,19 +36,19 @@
         h3 { margin-bottom: 16px; font-size: 18px; color: var(--text-main); }
         .form-group { margin-bottom: 20px; }
         label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 14px; }
-        
-        input[type="text"], input[type="date"], input[type="file"], select { 
-            padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; 
+
+        input[type="text"], input[type="date"], input[type="file"], select {
+            padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px;
             font-family: inherit; font-size: 14px; outline: none; width: 100%; max-width: 400px;
         }
         input[type="text"]:focus, select:focus { border-color: var(--primary-color); }
-        
+
         .filter-wrapper { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; background: #f1f3f4; padding: 16px; border-radius: 8px; align-items: center; }
         .search-box { display: flex; align-items: center; background: #fff; border: 1px solid var(--border-color); border-radius: 6px; padding: 0 10px; flex-grow: 1; min-width: 250px; }
         .search-box input { border: none; padding: 10px; width: 100%; box-shadow: none; max-width: none; }
         .search-box .material-icons { color: var(--text-muted); }
         .filter-wrapper select { width: auto; max-width: none; }
-        
+
         .btn { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s; }
         .btn:hover { background-color: var(--primary-hover); }
         table { width: 100%; border-collapse: collapse; margin-top: 16px; text-align: left; }
@@ -56,17 +56,33 @@
         th { background-color: #f8f9fa; font-weight: 700; color: var(--text-muted); position: sticky; top: 0; cursor: pointer; user-select: none; transition: background 0.2s; }
         th:hover { background-color: #e8eaed; }
         th .material-icons { font-size: 14px; vertical-align: middle; margin-left: 4px; color: #9aa0a6; }
-        
+
         tr.bg-green { background-color: var(--row-green) !important; }
         tr.bg-yellow { background-color: var(--row-yellow) !important; }
-        tr.bg-peach { background-color: var(--row-peach) !important; } /* 2년 6개월 행 색상 클래스 */
-        
-        .badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+        tr.bg-peach { background-color: var(--row-peach) !important; }
+
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-right: 4px; margin-bottom: 2px; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
         .badge-leave { background-color: #fce8e6; color: #d93025; }
-        .badge-namesake { background-color: #ea4335; color: #fff; } 
-        .badge-type { background-color: #f1f3f4; color: #5f6368; margin-right: 8px; margin-bottom: 4px; }
-        .badge-source { background-color: #e8eaed; color: #3c4043; font-size: 11px; margin-bottom: 4px; display: inline-block; }
-        .badge-excel { background-color: #1d6f42; color: #fff; font-size: 11px; margin-bottom: 4px; display: inline-block; }
+        .badge-namesake { background-color: #ea4335; color: #fff; }
+        .badge-dispatch { background-color: #e3f2fd; color: #1565c0; }
+        .badge-return { background-color: #e8f5e9; color: #2e7d32; }
+        .badge-retire { background-color: #eceff1; color: #455a64; }
+        .badge-unclassified { background-color: #f3e5f5; color: #6a1b9a; }
+        .badge-merged { background-color: #fff3e0; color: #e65100; font-weight: 500; }
+        .badge-promotion { background-color: #fce8e6; color: #b31412; font-weight: 700; border: 1px solid #fad2cf; }
+        .badge-position { background-color: #e0f2f1; color: #00695c; }
+        .badge-smart { background-color: #1a73e8; color: #fff; font-size: 11px; }
+        .badge-fixed { background-color: #9aa0a6; color: #fff; font-size: 11px; }
+        .badge-source { background-color: #e8eaed; color: #3c4043; font-size: 11px; margin-bottom: 4px; display: inline-block; padding: 2px 6px; border-radius: 4px; }
+        .badge-excel { background-color: #1d6f42; color: #fff; font-size: 11px; margin-bottom: 4px; display: inline-block; padding: 2px 6px; border-radius: 4px; }
+
+        .stats-bar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .stat-card { flex: 1; min-width: 120px; background: #f8f9fa; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 16px; }
+        .stat-card .stat-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+        .stat-card .stat-value { font-size: 22px; font-weight: 700; color: var(--text-main); }
+        .stat-card.excluded .stat-value { color: var(--text-muted); }
+
+        .log-box { margin-top: 16px; background: #fafafa; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--text-muted); max-height: 220px; overflow-y: auto; white-space: pre-wrap; }
     </style>
 </head>
 <body>
@@ -86,26 +102,24 @@
 
     <main class="main-content">
         <div class="content-area">
-            
+
             <section id="upload" class="section active">
                 <h3>다중 인사 데이터 업로드</h3>
                 <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 14px;">
                     연도별, 양식별(도/지원청), 수정차수별 엑셀 파일을 모두 선택하여 업로드해주세요.<br>
                     업로드가 완료되면 <strong>시스템 설정</strong> 화면으로 자동 이동합니다.
                 </p>
-
                 <div class="form-group">
                     <input type="file" id="dataFile" accept=".csv, .xlsx, .xls" multiple style="max-width: 100%;">
                 </div>
-                
                 <button class="btn" onclick="handleMultipleFileUpload()">
                     <span class="material-icons">cloud_upload</span> 전체 업로드 및 병합 파싱
                 </button>
+                <div class="log-box" id="parseLogBox" style="display:none;"></div>
             </section>
 
             <section id="settings" class="section">
                 <h3>환경 설정</h3>
-                
                 <div class="form-group">
                     <label for="myRegion">🏢 우리 관할 지역 설정 (관외 전출자 필터링용)</label>
                     <select id="myRegion">
@@ -126,12 +140,10 @@
                         <option value="본청">충남교육청(본청)</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="baseDate">📅 인사 내신 (근무기간 계산) 기준일자 설정</label>
                     <input type="date" id="baseDate">
                 </div>
-                
                 <button class="btn" onclick="saveSettings()"><span class="material-icons">check_circle</span> 설정 저장 및 조회하기</button>
             </section>
 
@@ -139,36 +151,45 @@
                 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px;">
                     <h3>인사 내신 및 만기 대상자 통합 조회</h3>
                     <p style="font-size: 14px; font-weight: 500;">
-                        관할: <strong id="displayRegion" style="color: var(--primary-color);"></strong> / 
+                        관할: <strong id="displayRegion" style="color: var(--primary-color);"></strong> /
                         기준일: <strong id="displayBaseDate" style="color: var(--primary-color);"></strong>
                     </p>
                 </div>
-                
+
+                <div class="stats-bar" id="statsBar"></div>
+
                 <div class="filter-wrapper">
                     <div class="search-box">
                         <span class="material-icons">search</span>
                         <input type="text" id="searchInput" placeholder="이름, 기관명, 직급 등 검색..." onkeyup="filterTable()">
                     </div>
-                    
                     <select id="tenureFilter" onchange="filterTable()">
                         <option value="all">근무기간 전체보기</option>
-                        <option value="30">2년 6개월 이상</option> <option value="24">2년 이상 (내신 대상)</option>
+                        <option value="30">2년 6개월 이상</option>
+                        <option value="24">2년 이상 (내신 대상)</option>
                         <option value="18">1년 6개월 이상</option>
                         <option value="12">1년 이상</option>
                     </select>
-
                     <select id="regionFilter" onchange="filterTable()">
                         <option value="local" selected>우리 지역 관내만 보기 (타지역 전출자 숨김)</option>
                         <option value="all">도내 전체보기 (관외 전출자 포함)</option>
+                    </select>
+                    <select id="moveTypeFilter" onchange="filterTable()">
+                        <option value="all">이동유형 전체보기</option>
+                        <option value="이동">이동만 보기 (전입/전출 통계 대상)</option>
+                        <option value="파견">파견만 보기</option>
+                        <option value="복귀">복귀만 보기</option>
+                        <option value="퇴직">퇴직만 보기 (통계 제외)</option>
+                        <option value="미분류">미분류만 보기</option>
                     </select>
                 </div>
 
                 <table>
                     <thead>
                         <tr>
-                            <th onclick="sortTable('location')">출처/발령지 <span class="material-icons">unfold_more</span></th>
+                            <th onclick="sortTable('location')">현임지 (최종소속) <span class="material-icons">unfold_more</span></th>
                             <th onclick="sortTable('name')">이름 <span class="material-icons">unfold_more</span></th>
-                            <th onclick="sortTable('rank')">직급 <span class="material-icons">unfold_more</span></th>
+                            <th onclick="sortTable('rank')">최종 직급 <span class="material-icons">unfold_more</span></th>
                             <th onclick="sortTable('appointDate')">최근 발령일자 <span class="material-icons">unfold_more</span></th>
                             <th onclick="sortTable('tenure')">근무기간 (내신 기준) <span class="material-icons">unfold_more</span></th>
                             <th>비고</th>
@@ -183,27 +204,49 @@
                 <p style="margin-bottom: 16px; font-size: 14px; color: var(--text-muted);">현재 조회 화면에 필터링 및 정렬된 표 상태 그대로 복사됩니다.</p>
                 <button class="btn" onclick="copyTable()"><span class="material-icons">content_copy</span> 엑셀용 표 전체 복사하기</button>
             </section>
-
         </div>
     </main>
 
     <script>
         let baseDate = new Date();
-        let myRegionStr = "천안"; 
-        let parsedData = []; 
-        
+        let myRegionStr = "천안";
+        let parsedData = [];
         let sortCol = 'appointDate';
-        let sortAsc = false; 
+        let sortAsc = false;
 
-        // 충남 전체 시/군/주요기관 목록
         const ALL_REGIONS = ['천안', '공주', '보령', '아산', '서산', '논산', '계룡', '당진', '금산', '부여', '서천', '청양', '홍성', '예산', '태안', '총무과', '도의회', '교육연수원', '학생교육문화원', '평생교육원', '유아교육원', '과학교육원', '국제교육원', '본청'];
+
+        const doColumnLayout = { currentLoc: 0, rank: 1, position: 2, name: 3, prevLoc: 4 };
+        const jiwonColumnLayout = { currentLoc: 0, rank: 1, position: 2, name: 3, prevLoc: 4 };
+
+        const HEADER_KW = {
+            name: ['성명', '이름'],
+            rank: ['직급', '직렬'],
+            position: ['직위'],
+            prevLoc: ['현직', '현소속', '전임지', '종전소속', '종전근무지', '전소속', '전출전소속', '발령전소속'],
+            currentLoc: ['발령사항', '소속', '부서', '발령지', '발령청', '임지지정', '전출지', '금후소속']
+        };
+
+        const DISPATCH_KW = ['파견'];
+        const RETURN_KW = ['복귀', '원대복귀'];
+        const RETIRE_KW = ['정년퇴직', '명예퇴직', '의원면직', '공로연수', '직권면직', '해임', '퇴직', '면직'];
+        const ORG_KEYWORDS = ['교육원', '교육청', '교육지원청', '지원청', '연수원', '문화원', '수련원', '도서관', '유치원', '평생교육', '과학교육', '국제교육', '유아교육', '학생교육', '위원회', '본청', '교육회', '체육회', '진흥원', '연구원'];
+
+        function looksLikeOrgName(text) {
+            const t = String(text || '');
+            return ORG_KEYWORDS.some(k => t.includes(k));
+        }
+
+        function getJobSeries(rankStr) {
+            if (!rankStr) return '';
+            return rankStr.replace(/지방|주사보|주사|서기보|서기|사무관|부이사관|서기관|시보|연구관|연구사|장학관|장학사|\(.*\)|[0-9]급|\s/g, '');
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('baseDate').value = baseDate.toISOString().split('T')[0];
             updateDisplaySettings();
         });
 
-        // 파일 읽기
         function readFileAsync(file) {
             return new Promise((resolve, reject) => {
                 const ext = file.name.split('.').pop().toLowerCase();
@@ -250,225 +293,341 @@
             return ret.map(r => r.map(c => c || ""));
         }
 
-        // 직급 및 직렬 동적 추출 함수 (수정됨)
+        function detectFileType(rows) {
+            const row1Text = (rows[0] || []).map(c => String(c)).join('');
+            const row2Text = (rows[1] || []).map(c => String(c)).join('');
+            if (row1Text.includes('도교육청')) return '도교육청';
+            if (row2Text.includes('지원청')) return '지원청';
+            const checkText = rows.slice(0, 50).map(r => r.join(',')).join('\n');
+            const isDistrictFallback = checkText.includes("현 소 속") && (checkText.replace(/\s/g, '').includes("발령사항") || checkText.replace(/\s/g, '').includes("소속"));
+            return isDistrictFallback ? '지원청' : '도교육청';
+        }
+
+        function detectHeaderColumns(rows) {
+            const limit = Math.min(rows.length, 30);
+            for (let i = 0; i < limit; i++) {
+                let rowStr = rows[i].join('').replace(/\s/g, '');
+                if (rowStr.includes('성명') || (i + 1 < limit && rows[i+1].join('').replace(/\s/g, '').includes('성명'))) {
+                    if (rowStr.includes('소속') || rowStr.includes('부서') || rowStr.includes('발령') || rowStr.includes('현직')) {
+                        let colMap = {};
+                        let topRow = rows[i];
+                        let bottomRow = (i + 1 < limit) ? rows[i+1] : [];
+                        let maxLen = Math.max(topRow.length, bottomRow.length);
+                        
+                        let currentTop = '';
+                        for(let j=0; j<maxLen; j++) {
+                            let t = String(topRow[j] || '').replace(/\s/g, '');
+                            let b = String(bottomRow[j] || '').replace(/\s/g, '');
+                            if (t) currentTop = t; else t = currentTop; 
+                            
+                            let cell = t + b;
+                            
+                            let mapped = false;
+                            for (const key in HEADER_KW) {
+                                if (colMap[key] !== undefined) continue;
+                                if (HEADER_KW[key].includes(cell) || HEADER_KW[key].includes(b) || HEADER_KW[key].includes(t)) {
+                                    if (key === 'currentLoc' && (cell.includes('발령사항') || cell.includes('임용사항')) && b === '') continue;
+                                    colMap[key] = j; mapped = true; break;
+                                }
+                            }
+                            if (!mapped) {
+                                for (const key in HEADER_KW) {
+                                    if (colMap[key] !== undefined) continue;
+                                    if (HEADER_KW[key].some(kw => cell.includes(kw))) {
+                                        if (key === 'currentLoc' && cell.includes('현소속')) continue;
+                                        colMap[key] = j; break;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (colMap.name !== undefined) {
+                            let startRow = rows[i].join('').replace(/\s/g,'').includes('성명') ? i + 1 : i + 2;
+                            return { headerRowIdx: startRow - 1, columnMap: colMap };
+                        }
+                    }
+                }
+            }
+            return { headerRowIdx: -1, columnMap: {} };
+        }
+
+        function canUseFullSmartParsing(headerInfo) {
+            return headerInfo.headerRowIdx >= 0 && headerInfo.columnMap.name !== undefined && headerInfo.columnMap.currentLoc !== undefined;
+        }
+
+        function classifyMoveType(category, oldLoc, loc) {
+            const text = `${category || ''} ${oldLoc || ''} ${loc || ''}`;
+            if (RETIRE_KW.some(k => text.includes(k))) return '퇴직';
+            if (DISPATCH_KW.some(k => text.includes(k))) return '파견';
+            if (RETURN_KW.some(k => text.includes(k))) return '복귀';
+            if (!loc && !oldLoc) return '미분류';
+            return '이동';
+        }
+
         function simplifyRank(rankRaw) {
             if(!rankRaw) return '';
-            
-            // 엑셀 셀 내의 줄바꿈(\n) 및 공백 문자를 완벽히 제거
             let rank = rankRaw.replace(/\s/g, '').trim();
-
-            // 이미 급수가 괄호로 들어있는 데이터라면 그대로 반환
             if(rank.includes('급)')) return rank;
+
+            let explicitGradeMatch = rank.match(/(\d)급/);
+            if (explicitGradeMatch) {
+                let base = rank.replace(/\d급/, '').trim();
+                return base ? `${base}(${explicitGradeMatch[1]}급)` : `(${explicitGradeMatch[1]}급)`;
+            }
 
             let grade = '';
             if(rank.includes('부이사관')) grade = '(3급)';
             else if(rank.includes('서기관')) grade = '(4급)';
             else if(rank.includes('사무관')) grade = '(5급)';
             else if(rank.includes('주사보')) grade = '(7급)';
-            else if(rank.includes('주사')) grade = '(6급)'; // 주사보 조건 체크보다 아래에 위치해야 함
-            else if(rank.includes('서기보')) {
-                // 시보인 경우 급수 표기를 생략하거나 필요 시 고정 가능
-                grade = rank.includes('시보') ? '' : '(9급)'; 
-            }
-            else if(rank.includes('서기')) grade = '(8급)'; // 서기보 조건 체크보다 아래에 위치해야 함
-
-            // 원본 데이터의 직렬 텍스트에 판별된 급수 괄호를 동적으로 결합 (예: 지방조리주사보(7급))
+            else if(rank.includes('주사')) grade = '(6급)';
+            else if(rank.includes('서기보')) grade = rank.includes('시보') ? '' : '(9급)';
+            else if(rank.includes('서기')) grade = '(8급)';
             return rank + grade;
         }
 
-        function cleanName(rawName) {
-            return String(rawName).replace(/[★*\s]/g, '').trim();
+        function cleanName(rawName) { return String(rawName).replace(/[★*\s]/g, '').trim(); }
+
+        function parseRowsWithLayout(rows, layout, fileTypeStr, fileFormat, commonAppointDate, counters, startRow, parseMode) {
+            const EXCLUDE_KEYWORDS = ['임명장', '임용장', '교부대상', '대상자 명단', '정년퇴직', '퇴직준비', '명예퇴직', '의원면직', '공로연수'];
+            const results = [];
+            let currentCategory = "";
+            let skipCurrentCategory = false;
+
+            for (let i = startRow; i < rows.length; i++) {
+                const row = rows[i] || [];
+                const cells = row.map(c => String(c).trim());
+                const rowJoined = cells.filter(c => c !== '').join('');
+                if (!rowJoined) continue;
+
+                const firstNonEmpty = cells.find(c => c !== '') || '';
+                if (firstNonEmpty.match(/^[<≪\[▣"▩]/) || rowJoined.includes('대상자') || rowJoined.includes('임지지정') || rowJoined.includes('교부대상')) {
+                    currentCategory = firstNonEmpty || rowJoined;
+                    skipCurrentCategory = EXCLUDE_KEYWORDS.some(k => currentCategory.includes(k));
+                    continue;
+                }
+                if (skipCurrentCategory) continue;
+
+                const rawName = cells[layout.name];
+                if (!rawName || rawName === '성명' || rawName.includes('표시자')) continue;
+                if (looksLikeOrgName(rawName)) { counters.skippedOrgRows++; continue; }
+                const name = cleanName(rawName);
+                if (!name) continue;
+
+                const loc = String(cells[layout.currentLoc] || '').trim();
+                const oldLoc = layout.prevLoc !== undefined ? String(cells[layout.prevLoc] || '').trim() : '';
+                const rankRaw = layout.rank !== undefined ? String(cells[layout.rank] || '').trim() : '';
+                const positionRaw = layout.position !== undefined ? String(cells[layout.position] || '').trim() : '';
+
+                if (rankRaw === '직급' || loc === '현직' || loc === '현소속') continue;
+
+                let isLeave = currentCategory.includes('휴직') || loc.includes('휴직');
+                let finalLoc = loc;
+                if (isLeave && !finalLoc) finalLoc = "휴직";
+
+                const moveType = classifyMoveType(currentCategory, oldLoc, finalLoc);
+
+                results.push({
+                    sourceName: fileTypeStr, fileExt: fileFormat,
+                    location: finalLoc.replace(/\n/g, ' '), oldLocation: oldLoc.replace(/\n/g, ' '),
+                    name: name, rank: simplifyRank(rankRaw), position: positionRaw,
+                    appointDate: commonAppointDate, isLeave: isLeave, moveType: moveType, parseMode: parseMode
+                });
+            }
+            return results;
         }
 
         async function handleMultipleFileUpload() {
             const fileInput = document.getElementById('dataFile');
             if (!fileInput.files.length) return;
-            
+
             let rawExtractedData = [];
-            const EXCLUDE_KEYWORDS = ['임명장', '임용장', '교부대상', '대상자 명단', '정년퇴직', '퇴직준비', '명예퇴직', '의원면직', '공로연수'];
+            const counters = { skippedOrgRows: 0 };
+            const parseLog = [];
 
             for (let f = 0; f < fileInput.files.length; f++) {
                 try {
                     const fileObj = await readFileAsync(fileInput.files[f]);
                     const rows = fileObj.rows;
-                    const fileFormat = fileObj.fileExt; 
+                    const fileFormat = fileObj.fileExt;
                     const fileName = fileObj.name;
-                    
+
                     const checkRowsText = rows.slice(0, 50).map(r => r.join(',')).join('\n');
-                    
-                    let commonAppointDate = "2024-01-01"; 
-                    let dateMatch = checkRowsText.match(/20\d{2}\.\s*\d{1,2}\.\s*\d{1,2}\./) || fileName.match(/20\d{2}\.\s*\d{1,2}\.\s*\d{1,2}\./);
-                    if(dateMatch) {
-                        const cleanDate = dateMatch[0].replace(/\s/g, '').replace(/\.$/, '').split('.');
+
+                    let commonAppointDate = "2024-01-01";
+                    let fullDateMatch = checkRowsText.match(/20\d{2}\.\s*\d{1,2}\.\s*\d{1,2}\./) || fileName.match(/20\d{2}\.\s*\d{1,2}\.\s*\d{1,2}\./);
+                    if (fullDateMatch) {
+                        const cleanDate = fullDateMatch[0].replace(/\s/g, '').replace(/\.$/, '').split('.');
                         commonAppointDate = `${cleanDate[0]}-${cleanDate[1].padStart(2,'0')}-${cleanDate[2].padStart(2,'0')}`;
-                    }
-
-                    let isDistrict = checkRowsText.includes("현 소 속") && (checkRowsText.replace(/\s/g, '').includes("발령사항") || checkRowsText.replace(/\s/g, '').includes("소속"));
-                    let fileTypeStr = isDistrict ? "지원청" : "도교육청";
-
-                    let currentCategory = "";
-                    let skipCurrentCategory = false; 
-
-                    if (isDistrict) {
-                        for(let i=0; i<rows.length; i++) {
-                            const denseRow = rows[i].map(c => String(c).trim()).filter(c => c !== '');
-                            if (denseRow.length < 3) continue; 
-                            
-                            let loc = String(rows[i][0] || "").trim();
-                            let rowString = denseRow.join('');
-
-                            if(!loc || loc.match(/^[<≪\[▣"▩]/) || loc.replace(/\s/g,'').includes('발령사항') || loc.replace(/\s/g,'').includes('소속') || loc.includes('인사규모') || loc.includes('표시자')) {
-                                if(loc.match(/^[<≪\[]/) || rowString.includes('대상자') || rowString.includes('임지지정')) {
-                                    currentCategory = loc || rowString;
-                                    skipCurrentCategory = EXCLUDE_KEYWORDS.some(k => currentCategory.includes(k));
-                                }
-                                continue;
-                            }
-                            if (skipCurrentCategory) continue;
-
-                            let rank = denseRow[1];
-                            let name = "", oldLoc = "";
-
-                            for (let c = 2; c < denseRow.length; c++) {
-                                let val = denseRow[c].replace(/[★*\s]/g, '');
-                                if (val === '성명' || val.includes('표시자')) continue;
-                                if (val.length >= 2 && val.length <= 5 && !val.endsWith('실장') && !val.endsWith('과장') && !val.endsWith('팀장') && !val.endsWith('센터장') && !val.includes('파견')) {
-                                    name = val;
-                                    oldLoc = denseRow.slice(c + 1).join(' ').replace(/[★*]/g, '').trim();
-                                    break;
-                                }
-                            }
-                            if(!name) continue;
-
-                            let isLeave = currentCategory.includes('휴직') || loc.includes('휴직');
-                            if(isLeave && !loc) loc = "휴직";
-
-                            rawExtractedData.push({ sourceName: fileTypeStr, fileExt: fileFormat, location: loc.replace(/\n/g, ' '), oldLocation: oldLoc.replace(/\n/g, ' '), name: name, rank: simplifyRank(rank), appointDate: commonAppointDate, isLeave: isLeave });
-                        }
                     } else {
-                        for(let i=0; i<rows.length; i++) {
-                            const denseRow = rows[i].map(c => String(c).trim()).filter(c => c !== '');
-                            if (denseRow.length === 0) continue;
-                            
-                            const rowString = denseRow.join('');
-                            let firstCellStr = denseRow[0];
-
-                            if (rowString.includes('★') && rowString.includes('표시자')) continue;
-                            if(firstCellStr.match(/^[<≪\[]/) || rowString.includes('대상자') || rowString.includes('교부대상')) { 
-                                currentCategory = rowString; 
-                                skipCurrentCategory = EXCLUDE_KEYWORDS.some(keyword => currentCategory.includes(keyword));
-                                continue; 
-                            }
-                            if (skipCurrentCategory) continue;
-
-                            if(denseRow.length >= 4 && /^\d+$/.test(firstCellStr)) {
-                                let rawName = denseRow[1];
-                                if(!rawName || rawName === '성명' || rawName.includes('표시자')) continue;
-                                let name = cleanName(rawName); 
-                                let rank = simplifyRank(denseRow[2]);
-                                
-                                let locIdx = 3;
-                                while (locIdx < denseRow.length && /^\d+$/.test(denseRow[locIdx])) locIdx++; 
-                                
-                                let location = locIdx < denseRow.length ? denseRow[locIdx] : "";
-                                let oldLocation = denseRow.slice(locIdx + 1).join(' ').trim(); 
-                                let isLeave = currentCategory.includes('휴직') || location.includes('휴직');
-                                
-                                rawExtractedData.push({ sourceName: fileTypeStr, fileExt: fileFormat, location: location.replace(/\n/g, ' '), oldLocation: oldLocation.replace(/\n/g, ' '), name: name, rank: rank, appointDate: commonAppointDate, isLeave: isLeave });
-                            }
-                        }
-                    }
-                } catch (error) { console.error(error); }
-            } 
-
-            rawExtractedData.sort((a, b) => new Date(a.appointDate) - new Date(b.appointDate));
-            let finalList = [];
-
-            for (let row of rawExtractedData) {
-                let matches = finalList.filter(e => e.name === row.name);
-
-                if (matches.length === 0) {
-                    row.isNamesake = false;
-                    finalList.push(row);
-                } else {
-                    let cleanOldRow = row.oldLocation.replace(/[^가-힣]/g, '');
-                    let cleanRowLoc = row.location.replace(/[^가-힣]/g, '');
-                    let isNewHire = cleanOldRow.includes('신규'); 
-                    let targetPerson = null;
-
-                    for (let e of matches) {
-                        let cleanOldExisting = e.oldLocation.replace(/[^가-힣]/g, '');
-                        let cleanExistingLoc = e.location.replace(/[^가-힣]/g, '');
-
-                        if (e.appointDate === row.appointDate) {
-                            let isLinked = false;
-                            if (cleanExistingLoc && cleanRowLoc && (cleanExistingLoc.includes(cleanRowLoc) || cleanRowLoc.includes(cleanExistingLoc))) isLinked = true;
-                            if (cleanOldExisting && cleanOldRow && (cleanOldExisting.includes(cleanOldRow) || cleanOldRow.includes(cleanExistingLoc))) isLinked = true;
-                            if (isNewHire && cleanOldExisting.includes('신규')) isLinked = true;
-                            if (cleanExistingLoc && cleanOldRow && cleanOldRow.includes(cleanExistingLoc)) isLinked = true;
-                            if (cleanRowLoc && cleanOldExisting && cleanOldExisting.includes(cleanRowLoc)) isLinked = true;
-
-                            if (isLinked) { targetPerson = e; break; }
-                        } else {
-                            if (!cleanOldRow) continue; 
-                            if (cleanExistingLoc && cleanOldRow && (cleanExistingLoc.includes(cleanOldRow) || cleanOldRow.includes(cleanExistingLoc) || cleanOldRow.includes('휴직') || cleanExistingLoc.includes('휴직'))) {
-                                targetPerson = e; break;
-                            }
+                        let shortDateMatch = fileName.match(/(\d{1,2})\.\s*(\d{1,2})\.\s*자?/) || checkRowsText.match(/(\d{1,2})\.\s*(\d{1,2})\.\s*자/);
+                        let yearMatch = fileName.match(/20\d{2}/) || checkRowsText.match(/20\d{2}/);
+                        if (shortDateMatch) {
+                            let year = yearMatch ? yearMatch[0] : String(new Date().getFullYear());
+                            commonAppointDate = `${year}-${shortDateMatch[1].padStart(2,'0')}-${shortDateMatch[2].padStart(2,'0')}`;
                         }
                     }
 
-                    if (targetPerson) {
-                        let targetDate = new Date(targetPerson.appointDate);
-                        let rowDate = new Date(row.appointDate);
+                    const fileTypeStr = detectFileType(rows);
+                    const headerInfo = detectHeaderColumns(rows);
+                    const useSmartParsing = canUseFullSmartParsing(headerInfo);
 
-                        if (rowDate > targetDate) {
-                            let cleanExistingLoc = targetPerson.location.replace(/[^가-힣]/g, '');
-                            let isPromotionInPlace = cleanExistingLoc && cleanRowLoc && (cleanExistingLoc.includes(cleanRowLoc) || cleanRowLoc.includes(cleanExistingLoc));
-
-                            if (isPromotionInPlace) {
-                                targetPerson.rank = row.rank; 
-                                if (row.location.length > targetPerson.location.length) {
-                                    targetPerson.location = row.location;
-                                }
-                                targetPerson.oldLocation = row.oldLocation;
-                            } else {
-                                targetPerson.location = row.location;
-                                targetPerson.oldLocation = row.oldLocation;
-                                targetPerson.rank = row.rank; 
-                                targetPerson.appointDate = row.appointDate;
-                                targetPerson.isLeave = row.isLeave;
-                                targetPerson.sourceName = row.sourceName;
-                                targetPerson.fileExt = row.fileExt;
-                            }
-                        } else if (rowDate.getTime() === targetDate.getTime()) {
-                            if (targetPerson.sourceName === '도교육청' && row.sourceName === '지원청') {
-                                targetPerson.location = row.location;
-                                targetPerson.oldLocation = row.oldLocation;
-                                targetPerson.rank = row.rank;
-                                targetPerson.sourceName = row.sourceName;
-                                targetPerson.fileExt = row.fileExt;
-                            } 
-                        }
+                    let layout, startRow, parseMode;
+                    if (useSmartParsing) {
+                        layout = {
+                            currentLoc: headerInfo.columnMap.currentLoc, rank: headerInfo.columnMap.rank,
+                            position: headerInfo.columnMap.position, name: headerInfo.columnMap.name, prevLoc: headerInfo.columnMap.prevLoc
+                        };
+                        startRow = headerInfo.headerRowIdx + 1; parseMode = 'smart';
                     } else {
-                        row.isNamesake = true;
-                        matches.forEach(m => m.isNamesake = true);
-                        finalList.push(row); 
+                        layout = fileTypeStr === '지원청' ? jiwonColumnLayout : doColumnLayout;
+                        startRow = 0; parseMode = 'fixed';
                     }
+
+                    const parsed = parseRowsWithLayout(rows, layout, fileTypeStr, fileFormat, commonAppointDate, counters, startRow, parseMode);
+                    rawExtractedData = rawExtractedData.concat(parsed);
+
+                    parseLog.push(`[${fileName}] 구분: ${fileTypeStr} / 발령일자: ${commonAppointDate} / ${useSmartParsing ? '✅ 스마트 파싱' : '⚙ 고정 열 배치'} / 추출 인원: ${parsed.length}명`);
+                } catch (error) {
+                    console.error(error);
+                    parseLog.push(`⚠ 파일 처리 중 오류: ${error.message || error}`);
                 }
             }
 
-            parsedData = finalList;
+            const beforeSafetyNet = rawExtractedData.length;
+            rawExtractedData = rawExtractedData.filter(r => !looksLikeOrgName(r.name));
+            const removedBySafetyNet = beforeSafetyNet - rawExtractedData.length;
+
+            let movementSource = rawExtractedData.filter(r => r.moveType !== '퇴직' && r.moveType !== '미분류');
+            let excludedRecords = rawExtractedData.filter(r => r.moveType === '퇴직' || r.moveType === '미분류').map(r => ({...r, isNamesake: false}));
+
+            // 1. 이름표별로 레코드 그룹화
+            let groupedByName = {};
+            for (let r of movementSource) {
+                if (!groupedByName[r.name]) groupedByName[r.name] = [];
+                groupedByName[r.name].push(r);
+            }
+
+            let finalList = [];
+
+            // 2. 이력 추적 체인(Chain) 생성 및 압축 (완전 개선본)
+            for (let name in groupedByName) {
+                let records = groupedByName[name];
+                // 과거 발령일순 정렬
+                records.sort((a, b) => new Date(a.appointDate) - new Date(b.appointDate));
+
+                let chains = [];
+
+                for (let r of records) {
+                    let linkedChain = null;
+                    let cleanRowLoc = r.location.replace(/[^가-힣]/g, '');
+                    let cleanOldRow = r.oldLocation.replace(/[^가-힣]/g, '');
+                    let rSeries = getJobSeries(r.rank);
+                    let isNewHire = cleanOldRow.includes('신규');
+
+                    for (let chain of chains) {
+                        let e = chain[chain.length - 1]; // 체인의 가장 최근 이력과 우선 비교
+                        let eSeries = getJobSeries(e.rank);
+                        
+                        // 직렬(운전, 행정 등)이 다르면 바로 패스 (동명이인으로 체인 분리)
+                        if (rSeries && eSeries && rSeries !== eSeries) continue;
+
+                        let isLinked = false;
+
+                        // 체인 내의 '모든' 과거 기록과 비교. 중간에 누락된 파일이 있더라도 과거 전임지와 맞으면 연결됨.
+                        for (let pastRecord of chain) {
+                            let cleanExistingLoc = pastRecord.location.replace(/[^가-힣]/g, '');
+                            let cleanOldExisting = pastRecord.oldLocation.replace(/[^가-힣]/g, '');
+                            
+                            if (pastRecord.appointDate === r.appointDate) {
+                                if (cleanExistingLoc && cleanRowLoc && (cleanExistingLoc.includes(cleanRowLoc) || cleanRowLoc.includes(cleanExistingLoc))) isLinked = true;
+                                else if (cleanOldExisting && cleanOldRow && (cleanOldExisting.includes(cleanOldRow) || cleanOldRow.includes(cleanExistingLoc))) isLinked = true;
+                                else if (isNewHire && cleanOldExisting.includes('신규')) isLinked = true;
+                                else if (cleanExistingLoc && cleanOldRow && cleanOldRow.includes(cleanExistingLoc)) isLinked = true;
+                                else if (cleanRowLoc && cleanOldExisting && cleanOldExisting.includes(cleanRowLoc)) isLinked = true;
+                            } else {
+                                if (cleanExistingLoc && cleanRowLoc && (cleanExistingLoc.includes(cleanRowLoc) || cleanRowLoc.includes(cleanExistingLoc))) {
+                                    isLinked = true; // 같은 기관에 계속 있음 (자체 승진/보직이동)
+                                } else if (cleanOldRow && cleanExistingLoc && (cleanOldRow.includes(cleanExistingLoc) || cleanExistingLoc.includes(cleanOldRow) || cleanOldRow.includes('휴직') || cleanExistingLoc.includes('휴직'))) {
+                                    isLinked = true; // 타 부서나 학교로 이동 (예: 천안초 -> 체육인성건강과)
+                                } else if (cleanOldRow) {
+                                    let oldHasMyRegion = myRegionStr.split(',').some(region => cleanOldRow.includes(region));
+                                    if (oldHasMyRegion && pastRecord.sourceName === '지원청' && r.sourceName === '도교육청') {
+                                        isLinked = true; // 지원청 -> 도교육청 전보
+                                    }
+                                }
+                            }
+                            if (isLinked) break;
+                        }
+
+                        if (isLinked) {
+                            linkedChain = chain;
+                            break;
+                        }
+                    }
+
+                    if (linkedChain) {
+                        linkedChain.push(r);
+                    } else {
+                        chains.push([r]); // 안 이어지면 새로운 체인(새로운 동명이인) 시작
+                    }
+                }
+
+                // 3. 체인 압축! (각 체인당 무조건 "1줄"만 표에 표시되며 과거 기록은 소멸됨)
+                for (let chain of chains) {
+                    let finalRecord = { ...chain[chain.length - 1] }; // 가장 최신의 발령 1줄 복사
+                    
+                    let effectiveAppointDate = chain[0].appointDate;
+                    let lastLocClean = chain[0].location.replace(/[^가-힣]/g, '');
+
+                    // 이 체인의 역사(History)를 훑어보며 근무기간을 어디서부터 계산할지 정함
+                    for (let i = 1; i < chain.length; i++) {
+                        let currentLocClean = chain[i].location.replace(/[^가-힣]/g, '');
+                        // 소속 기관이 바뀌면 (예: 천안초 -> 체육인성건강과) 경력을 그 시점으로 리셋!
+                        if (!currentLocClean.includes(lastLocClean) && !lastLocClean.includes(currentLocClean)) {
+                            effectiveAppointDate = chain[i].appointDate;
+                            lastLocClean = currentLocClean;
+                        }
+                    }
+
+                    // 같은 기관 내 승진으로 인해 옛날 발령일부터 합산해야 하는 경우
+                    if (effectiveAppointDate !== finalRecord.appointDate) {
+                        finalRecord.originalAppointDate = effectiveAppointDate;
+                        finalRecord.isInPlacePromotion = true;
+                    } else {
+                        finalRecord.isInPlacePromotion = false;
+                    }
+
+                    // 체인이 여러 개 생성되었다면 완벽한 동명이인 (예: 행정 이성민 vs 운전 이성민)
+                    finalRecord.isNamesake = chains.length > 1;
+
+                    // 이동 경로 툴팁 추가
+                    let pathList = chain.map(c => c.location).filter((v, i, a) => a.indexOf(v) === i);
+                    if (pathList.length > 1) {
+                        finalRecord.mergedPath = pathList.join(' → ');
+                        finalRecord.isMergedPlacement = true;
+                    }
+
+                    // 오직 '최신 현임지 1줄'만 최종 배열에 담음. 과거의 천안초 등은 이 배열에 절대 들어가지 못함!
+                    finalList.push(finalRecord);
+                }
+            }
+
+            parsedData = finalList.concat(excludedRecords);
+
+            const smartCount = rawExtractedData.filter(r => r.parseMode === 'smart').length;
+            const logBox = document.getElementById('parseLogBox');
+            parseLog.push(`총 파싱 인원: ${parsedData.length}명 (스마트 파싱 ${smartCount}건) / 기관명 오인 제외: ${counters.skippedOrgRows + removedBySafetyNet}건`);
+            logBox.style.display = 'block';
+            logBox.innerText = parseLog.join('\n');
+
             switchTab('settings', document.querySelectorAll('.nav-item')[1]);
             filterTable();
         }
 
         function sortTable(column) {
-            if (sortCol === column) {
-                sortAsc = !sortAsc;
-            } else {
-                sortCol = column;
-                sortAsc = true;
-            }
+            if (sortCol === column) sortAsc = !sortAsc;
+            else { sortCol = column; sortAsc = true; }
             filterTable();
         }
 
@@ -476,57 +635,61 @@
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             const tenureVal = document.getElementById('tenureFilter').value;
             const regionVal = document.getElementById('regionFilter').value;
+            const moveTypeVal = document.getElementById('moveTypeFilter').value;
 
             let filteredData = parsedData.filter(emp => {
-                const tenure = calculateTenure(emp.appointDate, baseDate);
+                const effectiveDate = emp.originalAppointDate || emp.appointDate;
+                const tenure = calculateTenure(effectiveDate, baseDate);
                 
-                // 1. 키워드 검색
-                const matchKeyword = emp.name.toLowerCase().includes(keyword) || 
-                                     emp.location.toLowerCase().includes(keyword) ||
-                                     emp.rank.toLowerCase().includes(keyword);
-                
-                // 2. 근무기간 필터링
-                let matchTenure = true;
-                if(tenureVal !== 'all') {
-                    matchTenure = tenure.totalMonths >= parseInt(tenureVal);
-                }
+                const matchKeyword = emp.name.toLowerCase().includes(keyword) || emp.location.toLowerCase().includes(keyword) || emp.rank.toLowerCase().includes(keyword);
 
-                // 3. 관외 전출자 필터링
+                let matchTenure = true;
+                if(tenureVal !== 'all') matchTenure = tenure.totalMonths >= parseInt(tenureVal);
+
                 let matchRegion = true;
                 if(regionVal === 'local') {
                     const loc = emp.location.replace(/\s/g, '');
                     const myRegionKeys = myRegionStr.split(',');
                     const outsideRegions = ALL_REGIONS.filter(r => !myRegionKeys.includes(r));
-                    
                     let isMyRegion = myRegionKeys.some(r => loc.includes(r)) || loc.includes('휴직');
-
-                    if (!isMyRegion) {
-                        if (outsideRegions.some(r => loc.includes(r))) {
-                            matchRegion = false;
-                        }
-                    }
+                    if (!isMyRegion && outsideRegions.some(r => loc.includes(r))) matchRegion = false;
                 }
 
-                return matchKeyword && matchTenure && matchRegion;
+                let matchMoveType = true;
+                if (moveTypeVal !== 'all') matchMoveType = emp.moveType === moveTypeVal;
+
+                return matchKeyword && matchTenure && matchRegion && matchMoveType;
             });
 
-            // 정렬 처리
             filteredData.sort((a, b) => {
-                let valA = a[sortCol];
-                let valB = b[sortCol];
-                
+                let valA = a[sortCol]; let valB = b[sortCol];
                 if(sortCol === 'tenure') {
-                    valA = new Date(a.appointDate).getTime();
-                    valB = new Date(b.appointDate).getTime();
-                    return sortAsc ? valB - valA : valA - valB; 
+                    valA = new Date(a.originalAppointDate || a.appointDate).getTime();
+                    valB = new Date(b.originalAppointDate || b.appointDate).getTime();
+                    return sortAsc ? valB - valA : valA - valB;
                 }
-
                 if (valA < valB) return sortAsc ? -1 : 1;
                 if (valA > valB) return sortAsc ? 1 : -1;
                 return 0;
             });
 
+            renderStats(filteredData);
             renderTable(filteredData);
+        }
+
+        function renderStats(data) {
+            const bar = document.getElementById('statsBar');
+            if (!bar) return;
+            const counts = { '이동': 0, '파견': 0, '복귀': 0, '퇴직': 0, '미분류': 0 };
+            data.forEach(e => { if (counts[e.moveType] !== undefined) counts[e.moveType]++; });
+
+            bar.innerHTML = `
+                <div class="stat-card"><div class="stat-label">이동 (전입/전출 통계 대상)</div><div class="stat-value">${counts['이동']}명</div></div>
+                <div class="stat-card"><div class="stat-label">파견</div><div class="stat-value">${counts['파견']}명</div></div>
+                <div class="stat-card"><div class="stat-label">복귀</div><div class="stat-value">${counts['복귀']}명</div></div>
+                <div class="stat-card excluded"><div class="stat-label">퇴직 (통계 제외)</div><div class="stat-value">${counts['퇴직']}명</div></div>
+                <div class="stat-card excluded"><div class="stat-label">미분류 (통계 제외)</div><div class="stat-value">${counts['미분류']}명</div></div>
+            `;
         }
 
         function saveSettings() {
@@ -534,7 +697,6 @@
             if(!inputDate) return alert('날짜를 선택해주세요.');
             baseDate = new Date(inputDate);
             myRegionStr = document.getElementById('myRegion').value;
-            
             updateDisplaySettings();
             filterTable();
             switchTab('dashboard', document.querySelectorAll('.nav-item')[2]);
@@ -552,10 +714,19 @@
             let years = end.getFullYear() - start.getFullYear();
             let months = end.getMonth() - start.getMonth();
             let days = end.getDate() - start.getDate();
-
             if (days < 0) months--;
             if (months < 0) { years--; months += 12; }
             return { years, months, totalMonths: (years * 12) + months };
+        }
+
+        function moveTypeBadge(moveType) {
+            switch(moveType) {
+                case '파견': return '<span class="badge badge-dispatch">파견</span>';
+                case '복귀': return '<span class="badge badge-return">복귀</span>';
+                case '퇴직': return '<span class="badge badge-retire">퇴직(통계제외)</span>';
+                case '미분류': return '<span class="badge badge-unclassified">미분류(통계제외)</span>';
+                default: return '';
+            }
         }
 
         function renderTable(dataToRender) {
@@ -568,9 +739,9 @@
             }
 
             dataToRender.forEach(emp => {
-                const tenure = calculateTenure(emp.appointDate, baseDate);
+                const effectiveDate = emp.originalAppointDate || emp.appointDate;
+                const tenure = calculateTenure(effectiveDate, baseDate);
                 
-                // 💡 2년 6개월(30개월) 이상 살구색 적용
                 let rowClass = '';
                 if (tenure.totalMonths >= 30) rowClass = 'bg-peach';
                 else if (tenure.totalMonths >= 24) rowClass = 'bg-yellow';
@@ -579,23 +750,48 @@
                 let remarks = '';
                 if(emp.isLeave) remarks += '<span class="badge badge-leave">휴직자</span> ';
                 if(emp.isNamesake) remarks += '<span class="badge badge-namesake">동명이인</span> ';
+                if(emp.isInPlacePromotion) remarks += '<span class="badge badge-promotion">자체승진(기간합산)</span> ';
+                
+                remarks += moveTypeBadge(emp.moveType) + ' ';
 
-                let extBadge = emp.fileExt === 'excel' 
-                    ? `<span class="badge-excel">EXCEL</span>` 
+                // 💡 [핵심 버그 픽스] 지원청 내부 이동건(예: 행정과 -> 체육인성건강과)이 관외전출로 뜨지 않도록 예외 처리
+                if (emp.sourceName !== '지원청') {
+                    let myRegionKeys = myRegionStr.split(',');
+                    let oldLocClean = (emp.oldLocation || '').replace(/\s/g, '');
+                    let newLocClean = (emp.location || '').replace(/\s/g, '');
+
+                    let wasInMyRegion = myRegionKeys.some(r => oldLocClean.includes(r));
+                    let isNowInMyRegion = myRegionKeys.some(r => newLocClean.includes(r)) || newLocClean.includes('휴직');
+
+                    if (wasInMyRegion && !isNowInMyRegion && emp.moveType !== '퇴직' && emp.moveType !== '미분류') {
+                        remarks += '<span class="badge" style="background-color:#fff3e0; color:#e65100; border: 1px solid #ffb74d;">🚀 관외전출(본청/타지역)</span> ';
+                    }
+                }
+
+                if(emp.position) remarks += `<span class="badge badge-position">직위: ${emp.position}</span> `;
+                if(emp.isMergedPlacement && emp.mergedPath) {
+                    remarks += `<span class="badge badge-merged" title="${emp.mergedPath}">병합경로: ${emp.mergedPath}</span> `;
+                }
+                
+                let extBadge = emp.fileExt === 'excel'
+                    ? `<span class="badge-excel">EXCEL</span>`
                     : `<span style="background:#80868b; color:white; padding:2px 4px; border-radius:4px; font-size:11px;">CSV</span>`;
 
                 const tr = document.createElement('tr');
                 if(rowClass) tr.className = rowClass;
-                
+
                 tr.innerHTML = `
                     <td>
                         <span class="badge-source">${extBadge} ${emp.sourceName}</span><br>
-                        ${emp.location}
+                        <strong>${emp.location}</strong>
                     </td>
                     <td><strong>${emp.name}</strong></td>
                     <td>${emp.rank}</td>
                     <td>${emp.appointDate}</td>
-                    <td>${tenure.years}년 ${tenure.months}개월</td>
+                    <td>
+                        ${tenure.years > 0 ? tenure.years + '년 ' : ''}${tenure.months}개월
+                        ${emp.originalAppointDate ? `<br><span style="font-size: 11px; color: var(--primary-color);">(${emp.originalAppointDate} 부터)</span>` : ''}
+                    </td>
                     <td>${remarks}</td>
                 `;
                 tbody.appendChild(tr);
@@ -607,10 +803,7 @@
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             if(element) element.classList.add('active');
-            
-            if(sectionId === 'dashboard') {
-                filterTable();
-            }
+            if(sectionId === 'dashboard') filterTable();
         }
 
         function copyTable() {
