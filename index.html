@@ -216,7 +216,7 @@
 
         const ALL_REGIONS = ['천안', '공주', '보령', '아산', '서산', '논산', '계룡', '당진', '금산', '부여', '서천', '청양', '홍성', '예산', '태안', '총무과', '도의회', '교육연수원', '학생교육문화원', '평생교육원', '유아교육원', '과학교육원', '국제교육원', '본청'];
 
-        const doColumnLayout = { currentLoc: 0, rank: 1, position: 2, name: 3, prevLoc: 4 };
+        const doColumnLayout = { currentLoc: 0, rank: 1, name: 2 }; 
         const jiwonColumnLayout = { currentLoc: 0, rank: 1, position: 2, name: 3, prevLoc: 4 };
 
         const HEADER_KW = {
@@ -224,7 +224,7 @@
             rank: ['직급', '직렬'],
             position: ['직위'],
             prevLoc: ['현직', '현소속', '전임지', '종전소속', '종전근무지', '전소속', '전출전소속', '발령전소속'],
-            currentLoc: ['발령사항', '소속', '부서', '발령지', '발령청', '임지지정', '전출지', '금후소속']
+            currentLoc: ['발령사항', '소속', '부서', '발령지', '발령청', '임지지정', '임지', '전출지', '금후소속']
         };
 
         const DISPATCH_KW = ['파견'];
@@ -237,9 +237,35 @@
             return ORG_KEYWORDS.some(k => t.includes(k));
         }
 
+        // 직렬(행정, 운전 등) 확인용: 동명이인 분리를 위해 급수를 지우고 직렬만 남김
         function getJobSeries(rankStr) {
             if (!rankStr) return '';
             return rankStr.replace(/지방|주사보|주사|서기보|서기|사무관|부이사관|서기관|시보|연구관|연구사|장학관|장학사|\(.*\)|[0-9]급|\s/g, '');
+        }
+
+        // 급수 확인용: '주사', '서기' 등의 승진 여부를 판별하기 위해 괄호안의 급수만 쏙 뽑아냄
+        function getGradeOnly(rankStr) {
+            if (!rankStr) return '';
+            let m = String(rankStr).match(/\((\d)급\)/);
+            return m ? m[1] : String(rankStr).replace(/\s/g, '');
+        }
+
+        function cleanName(rawName) { return String(rawName).replace(/[★*\s]/g, '').trim(); }
+
+        // [핵심 추가 함수] 괄호 안의 진짜 소속명(과, 학교명)을 핀셋으로 뽑아내는 함수
+        function extractRealOrg(loc) {
+            if (!loc) return '';
+            let cleanLoc = String(loc).replace(/\s+/g, '');
+            let match = cleanLoc.match(/\((.*?)\)/); // 괄호 안 텍스트 추출
+            if (match) {
+                let inside = match[1];
+                // 파견, 퇴직, 휴직 등의 상태값은 무시하고 괄호 앞의 기관명을 사용
+                if (!inside.includes('파견') && !inside.includes('퇴직') && !inside.includes('휴직') && !inside.includes('시청')) {
+                    return inside.replace(/[^가-힣]/g, '');
+                }
+                return cleanLoc.split('(')[0].replace(/[^가-힣]/g, '');
+            }
+            return cleanLoc.replace(/[^가-힣]/g, '');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -294,61 +320,61 @@
         }
 
         function detectFileType(rows) {
-            const row1Text = (rows[0] || []).map(c => String(c)).join('');
-            const row2Text = (rows[1] || []).map(c => String(c)).join('');
-            if (row1Text.includes('도교육청')) return '도교육청';
-            if (row2Text.includes('지원청')) return '지원청';
-            const checkText = rows.slice(0, 50).map(r => r.join(',')).join('\n');
-            const isDistrictFallback = checkText.includes("현 소 속") && (checkText.replace(/\s/g, '').includes("발령사항") || checkText.replace(/\s/g, '').includes("소속"));
-            return isDistrictFallback ? '지원청' : '도교육청';
+            const checkText = rows.slice(0, 50).map(r => r.join('')).join('');
+            if (checkText.includes('도교육청') || checkText.includes('총무과') || checkText.includes('발송용')) return '도교육청';
+            return '지원청';
         }
 
         function detectHeaderColumns(rows) {
             const limit = Math.min(rows.length, 30);
+            let bestMap = {};
+            let bestIdx = -1;
+
             for (let i = 0; i < limit; i++) {
-                let rowStr = rows[i].join('').replace(/\s/g, '');
-                if (rowStr.includes('성명') || (i + 1 < limit && rows[i+1].join('').replace(/\s/g, '').includes('성명'))) {
-                    if (rowStr.includes('소속') || rowStr.includes('부서') || rowStr.includes('발령') || rowStr.includes('현직')) {
-                        let colMap = {};
-                        let topRow = rows[i];
-                        let bottomRow = (i + 1 < limit) ? rows[i+1] : [];
-                        let maxLen = Math.max(topRow.length, bottomRow.length);
+                let rowStr = (rows[i] || []).join('').replace(/\s/g, '');
+                let nextRowStr = (i + 1 < limit) ? (rows[i+1] || []).join('').replace(/\s/g, '') : '';
+                
+                if (rowStr.includes('성명') || nextRowStr.includes('성명')) {
+                    let colMap = {};
+                    let topRow = rows[i] || [];
+                    let bottomRow = (i + 1 < limit) ? rows[i+1] : [];
+                    let maxLen = Math.max(topRow.length, bottomRow.length);
+                    
+                    let currentTop = '';
+                    for(let j=0; j<maxLen; j++) {
+                        let t = String(topRow[j] || '').replace(/\s/g, '');
+                        let b = String(bottomRow[j] || '').replace(/\s/g, '');
+                        if (t) currentTop = t; else t = currentTop; 
                         
-                        let currentTop = '';
-                        for(let j=0; j<maxLen; j++) {
-                            let t = String(topRow[j] || '').replace(/\s/g, '');
-                            let b = String(bottomRow[j] || '').replace(/\s/g, '');
-                            if (t) currentTop = t; else t = currentTop; 
-                            
-                            let cell = t + b;
-                            
-                            let mapped = false;
+                        let cell = t + b; 
+                        
+                        let mapped = false;
+                        for (const key in HEADER_KW) {
+                            if (colMap[key] !== undefined) continue;
+                            if (HEADER_KW[key].includes(cell) || HEADER_KW[key].includes(b) || HEADER_KW[key].includes(t)) {
+                                colMap[key] = j; mapped = true; break;
+                            }
+                        }
+                        if (!mapped) {
                             for (const key in HEADER_KW) {
                                 if (colMap[key] !== undefined) continue;
-                                if (HEADER_KW[key].includes(cell) || HEADER_KW[key].includes(b) || HEADER_KW[key].includes(t)) {
-                                    if (key === 'currentLoc' && (cell.includes('발령사항') || cell.includes('임용사항')) && b === '') continue;
-                                    colMap[key] = j; mapped = true; break;
-                                }
-                            }
-                            if (!mapped) {
-                                for (const key in HEADER_KW) {
-                                    if (colMap[key] !== undefined) continue;
-                                    if (HEADER_KW[key].some(kw => cell.includes(kw))) {
-                                        if (key === 'currentLoc' && cell.includes('현소속')) continue;
-                                        colMap[key] = j; break;
-                                    }
+                                if (HEADER_KW[key].some(kw => cell.includes(kw))) {
+                                    if (key === 'currentLoc' && (cell.includes('현소속') || cell.includes('전소속'))) continue; 
+                                    colMap[key] = j; break;
                                 }
                             }
                         }
-                        
-                        if (colMap.name !== undefined) {
-                            let startRow = rows[i].join('').replace(/\s/g,'').includes('성명') ? i + 1 : i + 2;
-                            return { headerRowIdx: startRow - 1, columnMap: colMap };
+                    }
+                    
+                    if (colMap.name !== undefined) {
+                        if (Object.keys(colMap).length > Object.keys(bestMap).length) {
+                            bestMap = colMap;
+                            bestIdx = rowStr.includes('성명') ? i : i + 1;
                         }
                     }
                 }
             }
-            return { headerRowIdx: -1, columnMap: {} };
+            return { headerRowIdx: bestIdx, columnMap: bestMap };
         }
 
         function canUseFullSmartParsing(headerInfo) {
@@ -385,8 +411,6 @@
             else if(rank.includes('서기')) grade = '(8급)';
             return rank + grade;
         }
-
-        function cleanName(rawName) { return String(rawName).replace(/[★*\s]/g, '').trim(); }
 
         function parseRowsWithLayout(rows, layout, fileTypeStr, fileFormat, commonAppointDate, counters, startRow, parseMode) {
             const EXCLUDE_KEYWORDS = ['임명장', '임용장', '교부대상', '대상자 명단', '정년퇴직', '퇴직준비', '명예퇴직', '의원면직', '공로연수'];
@@ -487,7 +511,7 @@
                     const parsed = parseRowsWithLayout(rows, layout, fileTypeStr, fileFormat, commonAppointDate, counters, startRow, parseMode);
                     rawExtractedData = rawExtractedData.concat(parsed);
 
-                    parseLog.push(`[${fileName}] 구분: ${fileTypeStr} / 발령일자: ${commonAppointDate} / ${useSmartParsing ? '✅ 스마트 파싱' : '⚙ 고정 열 배치'} / 추출 인원: ${parsed.length}명`);
+                    parseLog.push(`[${fileName}] 구분: ${fileTypeStr} / 발령일자: ${commonAppointDate} / ${useSmartParsing ? '✅ 스마트 파싱(자동인식)' : '⚙ 고정 열 배치'} / 추출 인원: ${parsed.length}명`);
                 } catch (error) {
                     console.error(error);
                     parseLog.push(`⚠ 파일 처리 중 오류: ${error.message || error}`);
@@ -501,7 +525,6 @@
             let movementSource = rawExtractedData.filter(r => r.moveType !== '퇴직' && r.moveType !== '미분류');
             let excludedRecords = rawExtractedData.filter(r => r.moveType === '퇴직' || r.moveType === '미분류').map(r => ({...r, isNamesake: false}));
 
-            // 1. 이름표별로 레코드 그룹화
             let groupedByName = {};
             for (let r of movementSource) {
                 if (!groupedByName[r.name]) groupedByName[r.name] = [];
@@ -510,34 +533,32 @@
 
             let finalList = [];
 
-            // 2. 이력 추적 체인(Chain) 생성 및 압축 (완전 개선본)
             for (let name in groupedByName) {
                 let records = groupedByName[name];
-                // 과거 발령일순 정렬
                 records.sort((a, b) => new Date(a.appointDate) - new Date(b.appointDate));
 
                 let chains = [];
 
                 for (let r of records) {
                     let linkedChain = null;
-                    let cleanRowLoc = r.location.replace(/[^가-힣]/g, '');
-                    let cleanOldRow = r.oldLocation.replace(/[^가-힣]/g, '');
-                    let rSeries = getJobSeries(r.rank);
+                    let cleanRowLoc = extractRealOrg(r.location);
+                    let cleanOldRow = extractRealOrg(r.oldLocation);
+                    
+                    let rSeries = getJobSeries(r.rank); // 동명이인 구분을 위해 직렬만 추출
                     let isNewHire = cleanOldRow.includes('신규');
 
                     for (let chain of chains) {
-                        let e = chain[chain.length - 1]; // 체인의 가장 최근 이력과 우선 비교
+                        let e = chain[chain.length - 1]; 
                         let eSeries = getJobSeries(e.rank);
                         
-                        // 직렬(운전, 행정 등)이 다르면 바로 패스 (동명이인으로 체인 분리)
+                        // 이름이 같아도 직렬(운전, 행정 등)이 다르면 다른 체인(동명이인)으로 분리
                         if (rSeries && eSeries && rSeries !== eSeries) continue;
 
                         let isLinked = false;
 
-                        // 체인 내의 '모든' 과거 기록과 비교. 중간에 누락된 파일이 있더라도 과거 전임지와 맞으면 연결됨.
                         for (let pastRecord of chain) {
-                            let cleanExistingLoc = pastRecord.location.replace(/[^가-힣]/g, '');
-                            let cleanOldExisting = pastRecord.oldLocation.replace(/[^가-힣]/g, '');
+                            let cleanExistingLoc = extractRealOrg(pastRecord.location);
+                            let cleanOldExisting = extractRealOrg(pastRecord.oldLocation);
                             
                             if (pastRecord.appointDate === r.appointDate) {
                                 if (cleanExistingLoc && cleanRowLoc && (cleanExistingLoc.includes(cleanRowLoc) || cleanRowLoc.includes(cleanExistingLoc))) isLinked = true;
@@ -547,13 +568,13 @@
                                 else if (cleanRowLoc && cleanOldExisting && cleanOldExisting.includes(cleanRowLoc)) isLinked = true;
                             } else {
                                 if (cleanExistingLoc && cleanRowLoc && (cleanExistingLoc.includes(cleanRowLoc) || cleanRowLoc.includes(cleanExistingLoc))) {
-                                    isLinked = true; // 같은 기관에 계속 있음 (자체 승진/보직이동)
+                                    isLinked = true; 
                                 } else if (cleanOldRow && cleanExistingLoc && (cleanOldRow.includes(cleanExistingLoc) || cleanExistingLoc.includes(cleanOldRow) || cleanOldRow.includes('휴직') || cleanExistingLoc.includes('휴직'))) {
-                                    isLinked = true; // 타 부서나 학교로 이동 (예: 천안초 -> 체육인성건강과)
+                                    isLinked = true; 
                                 } else if (cleanOldRow) {
                                     let oldHasMyRegion = myRegionStr.split(',').some(region => cleanOldRow.includes(region));
                                     if (oldHasMyRegion && pastRecord.sourceName === '지원청' && r.sourceName === '도교육청') {
-                                        isLinked = true; // 지원청 -> 도교육청 전보
+                                        isLinked = true; 
                                     }
                                 }
                             }
@@ -569,46 +590,67 @@
                     if (linkedChain) {
                         linkedChain.push(r);
                     } else {
-                        chains.push([r]); // 안 이어지면 새로운 체인(새로운 동명이인) 시작
+                        chains.push([r]); 
                     }
                 }
 
-                // 3. 체인 압축! (각 체인당 무조건 "1줄"만 표에 표시되며 과거 기록은 소멸됨)
+                // ⭐ 이력 추적 및 깐깐한 비교 (전보 vs 자체승진 vs 보직변경)
                 for (let chain of chains) {
-                    let finalRecord = { ...chain[chain.length - 1] }; // 가장 최신의 발령 1줄 복사
+                    let finalRecord = { ...chain[chain.length - 1] }; 
                     
                     let effectiveAppointDate = chain[0].appointDate;
-                    let lastLocClean = chain[0].location.replace(/[^가-힣]/g, '');
+                    let lastLocClean = extractRealOrg(chain[0].location);
+                    let lastGrade = getGradeOnly(chain[0].rank);
+                    let isPromotionReset = false;
 
-                    // 이 체인의 역사(History)를 훑어보며 근무기간을 어디서부터 계산할지 정함
                     for (let i = 1; i < chain.length; i++) {
-                        let currentLocClean = chain[i].location.replace(/[^가-힣]/g, '');
-                        // 소속 기관이 바뀌면 (예: 천안초 -> 체육인성건강과) 경력을 그 시점으로 리셋!
-                        if (!currentLocClean.includes(lastLocClean) && !lastLocClean.includes(currentLocClean)) {
+                        let currentLocClean = extractRealOrg(chain[i].location);
+                        let currentOldLocClean = extractRealOrg(chain[i].oldLocation);
+                        let currentGrade = getGradeOnly(chain[i].rank);
+                        
+                        let isSameOrgInRow = currentOldLocClean && (currentOldLocClean === currentLocClean || currentLocClean.includes(currentOldLocClean));
+                        let isSameOrgInChain = (currentLocClean === lastLocClean || currentLocClean.includes(lastLocClean) || lastLocClean.includes(currentLocClean));
+                        
+                        let isSameOrg = isSameOrgInRow || isSameOrgInChain;
+                        let isRankChanged = (currentGrade !== lastGrade && currentGrade !== '' && lastGrade !== '');
+
+                        if (!isSameOrg) {
+                            // 부서(학교)가 달라짐 -> 전보 (기간 초기화)
                             effectiveAppointDate = chain[i].appointDate;
                             lastLocClean = currentLocClean;
+                            lastGrade = currentGrade;
+                            isPromotionReset = false;
+                        } else {
+                            // 부서(학교)가 같음
+                            if (isRankChanged) {
+                                // 급수가 다름 -> 자체 승진 (기간 초기화)
+                                effectiveAppointDate = chain[i].appointDate;
+                                lastGrade = currentGrade;
+                                isPromotionReset = true;
+                            } else {
+                                // 급수가 같음 -> 단순 보직/직위 변경 (기간 유지)
+                                isPromotionReset = false;
+                            }
                         }
                     }
 
-                    // 같은 기관 내 승진으로 인해 옛날 발령일부터 합산해야 하는 경우
+                    finalRecord.isPromotionReset = isPromotionReset;
+
                     if (effectiveAppointDate !== finalRecord.appointDate) {
                         finalRecord.originalAppointDate = effectiveAppointDate;
-                        finalRecord.isInPlacePromotion = true;
+                        finalRecord.isInPlacePromotion = true; 
                     } else {
                         finalRecord.isInPlacePromotion = false;
                     }
 
-                    // 체인이 여러 개 생성되었다면 완벽한 동명이인 (예: 행정 이성민 vs 운전 이성민)
                     finalRecord.isNamesake = chains.length > 1;
 
-                    // 이동 경로 툴팁 추가
-                    let pathList = chain.map(c => c.location).filter((v, i, a) => a.indexOf(v) === i);
+                    let pathList = chain.map(c => extractRealOrg(c.location)).filter((v, i, a) => a.indexOf(v) === i && v !== '');
                     if (pathList.length > 1) {
                         finalRecord.mergedPath = pathList.join(' → ');
                         finalRecord.isMergedPlacement = true;
                     }
 
-                    // 오직 '최신 현임지 1줄'만 최종 배열에 담음. 과거의 천안초 등은 이 배열에 절대 들어가지 못함!
                     finalList.push(finalRecord);
                 }
             }
@@ -750,11 +792,16 @@
                 let remarks = '';
                 if(emp.isLeave) remarks += '<span class="badge badge-leave">휴직자</span> ';
                 if(emp.isNamesake) remarks += '<span class="badge badge-namesake">동명이인</span> ';
-                if(emp.isInPlacePromotion) remarks += '<span class="badge badge-promotion">자체승진(기간합산)</span> ';
+                
+                // ⭐ 추가된 판별 뱃지
+                if(emp.isPromotionReset) {
+                    remarks += '<span class="badge" style="background-color:#e8eaf6; color:#3f51b5;">🚀자체승진(초기화)</span> ';
+                } else if(emp.isInPlacePromotion) {
+                    remarks += '<span class="badge badge-promotion">단순변경(기간합산)</span> ';
+                }
                 
                 remarks += moveTypeBadge(emp.moveType) + ' ';
 
-                // 💡 [핵심 버그 픽스] 지원청 내부 이동건(예: 행정과 -> 체육인성건강과)이 관외전출로 뜨지 않도록 예외 처리
                 if (emp.sourceName !== '지원청') {
                     let myRegionKeys = myRegionStr.split(',');
                     let oldLocClean = (emp.oldLocation || '').replace(/\s/g, '');
